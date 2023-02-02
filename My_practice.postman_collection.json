@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "9758ce66-2c6a-4c4d-af41-f2631920f839",
+		"name": "My_practice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25453732"
+	},
+	"item": [
+		{
+			"name": "Json Server",
+			"item": [
+				{
+					"name": "AddCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"response\"]=responseCode.code==\"201\";\r",
+									"\r",
+									"var jdata=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"id\",jdata.id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var random=Math.random().toString(36).substring(2);\r",
+									"const num=Math.random()*(1000000);\r",
+									"\r",
+									"var cname=random+\"pvt.ltd\";\r",
+									"var sal =num;\r",
+									"\r",
+									"pm.environment.set(\"company_env\",cname);\r",
+									"pm.environment.set(\"sal_env\",sal);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \r\n        \"Comopany_name\": \"{{company_env}}\",\r\n        \"salary\": \"{{sal_env}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_mypractice}}/company",
+							"host": [
+								"{{url_mypractice}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"value of response field\", ()=>{\r",
+									"var Jsondata=pm.response.json();\r",
+									"\r",
+									"pm.expect(Jsondata.Comopany_name).to.eql(pm.environment.get(\"company_env\"));\r",
+									"pm.expect(Jsondata.salary).to.eql(pm.environment.get(\"sal_env\"));\r",
+									"pm.expect(Jsondata.id).to.eql(pm.environment.get(\"id\"));\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_mypractice}}/company/{{id}}",
+							"host": [
+								"{{url_mypractice}}"
+							],
+							"path": [
+								"company",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"response\"] = responseCode.code==\"200\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n        \"Comopany_name\": \"Microsoft\",\r\n        \"salary\": \"854220000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_mypractice}}/company{{id}}",
+							"host": [
+								"{{url_mypractice}}"
+							],
+							"path": [
+								"company{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCompanyId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"response\"]=responseCode.code==\"200\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_mypractice}}/company/{{id}}",
+							"host": [
+								"{{url_mypractice}}"
+							],
+							"path": [
+								"company",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPersonal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6d26fede3a5686a4808fa7a4a9f792cdae503f4e320bcfd1083c540d10b6e408",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"name\": \"{{$randomFullName}}\",\r\n        \"city\": \"{{$randomCity}}\",\r\n        \"age\": \"{{$random}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url_mypractice}}/personal",
+							"host": [
+								"{{url_mypractice}}"
+							],
+							"path": [
+								"personal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_mypractice}}/personal",
+							"host": [
+								"{{url_mypractice}}"
+							],
+							"path": [
+								"personal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "83982f63adbd0679c08559a5f60796a15dab22e16924eb5a793bc514bfe831a3",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url_mypractice",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
