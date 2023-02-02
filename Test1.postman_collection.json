@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "fc05e5cb-7e6a-4a3b-84c9-29896d170991",
+		"name": "Test1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25453732"
+	},
+	"item": [
+		{
+			"name": "DDF",
+			"item": [
+				{
+					"name": "CreateUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var random = Math.random().toString(30).substring(2);\r",
+									"\r",
+									"var name = \"aj\"+random;\r",
+									"var email = \"name\"+random+\"@gmail.com\";\r",
+									"\r",
+									"pm.environment.set(\"name_env\",name);\r",
+									"pm.environment.set(\"email_env\",email);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"response\"]=responseCode.code==\"201\";\r",
+									"\r",
+									"var jsdata = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"test_id\",jsdata.id);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"{{name_env}}\",\r\n        \"email\": \"{{email_env}}\",\r\n        \"gender\": \"male\",\r\n        \"status\": \"inactive\"\r\n}"
+						},
+						"url": {
+							"raw": "{{test_url}}/public/v2/users",
+							"host": [
+								"{{test_url}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FetchUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"validate the response\", function (){\r",
+									"var jdata=pm.response.json();\r",
+									"\r",
+									"pm.expect(jdata.name).to.eql(pm.environment.get(\"name_env\"));\r",
+									"pm.expect(jdata.email).to.eql(pm.environment.get(\"email_env\"));\r",
+									"pm.expect(jdata.id).to.eql(pm.environment.get(\"test_id\"));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{test_url}}/public/v2/users/{{test_id}}",
+							"host": [
+								"{{test_url}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"response\"]=responseCode.code=\"200\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Anand sharma\",\r\n        \"email\": \"anand12@yahoo.com\",\r\n        \"gender\": \"male\",\r\n        \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{test_url}}/public/v2/users/{{test_id}}",
+							"host": [
+								"{{test_url}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "8997f4e683ddb7acc168e9543e2bbec0c4816ca88613fcc901804122af451241",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "request",
+			"value": "https://reqres.in"
+		},
+		{
+			"key": "test_url",
+			"value": "https://gorest.co.in",
+			"type": "string"
+		}
+	]
+}
